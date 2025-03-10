@@ -4,6 +4,7 @@ Read functions for diff types. For visualisation of data we are to use matplot l
 import pandas as pd
 import tabula
 from pptx import Presentation
+import json
 '''
     This class represents the unified data structure I am to return
     Upon looking at the datasets, dataset 1 is about 2 sport and fitness companies
@@ -29,6 +30,7 @@ class Unified_data_structure:
         # data might be nested
         json_data = pd.read_json(filename)
         self.data['dataset_1'] = json_data
+        # after exploring the json_data object in pyshell
 
     def read_csv(self, filename) -> None:
         csv_data = pd.read_csv(filename)
@@ -62,9 +64,16 @@ class Unified_data_structure:
         
         # as for the information in slide 1 and 3, I think its best if we manually keyed in the information
         self.data['dataset_4'] = df
-        
-    def unify(self, data):
-        # take existing data and unify it with current
-        return None
+
+    def get_data(self, data):
+        # return entire self.data as JSON
+        json_data = {key: df.to_dict(orient='records') for key, df in self.data.items()}
+
+        # Save the JSON data to a file
+        with open('datasets/consolidated_datasets.json', 'w') as json_file:
+            json.dump(json_data, json_file, indent=4)
     
+    def visualise(self):
+        
+
 x = Unified_data_structure()
