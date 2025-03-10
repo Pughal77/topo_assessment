@@ -31,6 +31,13 @@ class Unified_data_structure:
         json_data = pd.read_json(filename)
         self.data['dataset_1'] = json_data
         # after exploring the json_data object in pyshell
+        # i think it is more meaningful to structure this data as such
+        # for now, we replace the list of employees to a pandas dataframe as well
+        headers = [key for key, list in json_data["companies"][0]["employees"][0].items()]
+        # replace it as pandas dataframe
+        for i in range(len(json_data['companies'])):
+            json_data["companies"][i]["employees"] = pd.DataFrame(json_data["companies"][i]["employees"], columns=headers)
+
 
     def read_csv(self, filename) -> None:
         csv_data = pd.read_csv(filename)
@@ -58,7 +65,7 @@ class Unified_data_structure:
             data.append(row_data)
         
         # Convert to Pandas DataFrame
-        headers = data[0]  # Assume first row contains headers
+        headers = data[0]  # first row does contain headers
         rows = data[1:]  # Remaining rows are data
         df = pd.DataFrame(rows, columns=headers)
         
@@ -86,4 +93,3 @@ class Unified_data_structure:
         return None
 
 x = Unified_data_structure()
-x.get_data_xlsx()
