@@ -65,15 +65,25 @@ class Unified_data_structure:
         # as for the information in slide 1 and 3, I think its best if we manually keyed in the information
         self.data['dataset_4'] = df
 
-    def get_data(self, data):
+    def get_data(self):
         # return entire self.data as JSON
         json_data = {key: df.to_dict(orient='records') for key, df in self.data.items()}
 
         # Save the JSON data to a file
         with open('datasets/consolidated_datasets.json', 'w') as json_file:
             json.dump(json_data, json_file, indent=4)
+
+    def get_data_xlsx(self):
+        # here we are converting the self.data to an xlsx file 
+        # in which each dataset would have its own excel sheet
+        # for dataset 1, I think it is more meaningful to separate them into 2 sheets, one containing 
+        with pd.ExcelWriter('datasets/consolidated_dataset.xlsx', engine='xlsxwriter') as writer:
+        # Iterate through the dictionary and write each DataFrame to a separate sheet
+            for sheet_name, df in self.data.items():
+                df.to_excel(writer, sheet_name=sheet_name, index=False)
     
     def visualise(self):
-        
+        return None
 
 x = Unified_data_structure()
+x.get_data_xlsx()
