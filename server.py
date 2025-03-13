@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException, Path
 from typing import Dict, Any
+from unified_data_structure import Unified_data_structure
+import json
 
 
 class DataAPIServer:
@@ -15,6 +17,8 @@ class DataAPIServer:
             version="1.0.0"
         )
         self._configure_routes()
+        ''' Iniitialise unified data structure'''
+        self.unified_data_structure = Unified_data_structure()
     
     def _configure_routes(self):
         """Configure the API routes and endpoints."""
@@ -41,11 +45,11 @@ class DataAPIServer:
         Retrieve all data without any parameters.
         
         Returns:
-            Dict[str, Any]: An empty dictionary for now
         """
         # This function is intentionally left empty for now
-        print("this is another endpoint")
-        return 0
+        self.unified_data_structure.get_data()
+        json_data = json.loads("datasets/consolidated_datasets.json")
+        return  json_data
     
     async def get_data_by_type(self, file_type: str = Path(..., description="The type of file to retrieve")) -> Any:
         """
@@ -55,7 +59,6 @@ class DataAPIServer:
             file_type (str): The type of file to retrieve
             
         Returns:
-            Dict[str, Any]: An empty dictionary for now
         """
         # This function is intentionally left empty for now
         print("this is an enpoint")

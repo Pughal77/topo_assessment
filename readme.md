@@ -1,12 +1,26 @@
 Overview: A description of your solution and approach.
-Approach is to use python modules for data visualisation and use FastApi to set up our backend and API services
+Approach is to use python modules for data visualisation and use FastApi to set up our API endpoints
 
-Then for the simple frontend we use a react-like framework (maybe mithril js) and include 2 buttons (one to print all data, one to select type of data to print).
 
-Unit tests can be written once a minimum viable product is achieved
 
 
 
 Setup Instructions: Steps to run the app locally and access the API.
+
+
+
 Testing Instructions: Steps to execute unit and integration tests.
+
+
 Assumptions or Challenges: Any assumptions or challenges you faced
+
+Assumptions - this application works only in the context of these 4 datasets
+
+Challenges -
+    It took some time to come to terms with how the unified data structure should be structured but due to a lack of time, I decided to settle with a simple one (I considered using a nosql database to store all 4 datasets but it was tough coming up with an appropriate schema)
+
+    Coming up with visualistations of the data. I had a hard time deciding of cmoing up with meaningful visualisations
+
+
+Future Improvements
+    Improve sturcture of unified dataset
