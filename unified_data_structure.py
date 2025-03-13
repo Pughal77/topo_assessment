@@ -1,10 +1,8 @@
-'''
-    This class represents the unified data structure I am to return
-'''
 import pandas as pd
 import tabula
 from pptx import Presentation
 import json
+import matplotlib.pyplot as plt
 
 """
 This class represents the unified data structure that we will ingest the 4 datasets and provide useful visualisations of this dataset.
@@ -53,7 +51,7 @@ class Unified_data_structure:
             del json_data["companies"][i]["employees"]
         header_companies = [key for key, list in json_data["companies"][0].items()]
         for i in range(len(json_data['companies'])):
-            companies[i] = pd.DataFrame(json_data["companies"][i]["employees"], columns=header_companies)
+            companies[i] = pd.DataFrame(json_data["companies"][i], columns=header_companies)
         self.data["companies"] = companies
         self.data["employees"] = employees
         
@@ -126,6 +124,28 @@ class Unified_data_structure:
     def visualise_data(self):
         # here is a visalisation of top revenue earners by activity amongst basic membership types
         # basic filtering and ordering of data is allowed as most values in the self.data dictionary are pandas dataframe
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 6))  # 1 row, 2 columns
+
+        # first visualisation is a graph plot of revenue earned from customers against the amount of time spent in the facility
+        value_counts = dict(self.data["customers"]["Location"].value_counts())
+        axes[0].bar(value_counts.keys(), value_counts.values())
+        axes[0].set_title('Overview of customers in each location')
+        axes[0].set_xlabel('Location')
+        axes[0].set_ylabel('Number of customers')
         
 
-        return None
+        # second visualisation is quarterly revenue against time
+        x = range(len(self.data["quarterly_performance"]))
+        y = self.data["quarterly_performance"]["Revenue (in $)"]
+        axes[1].plot(x, y)
+        axes[1].set_title('Quarterly Performance')
+        axes[1].set_xlabel('Time')
+        axes[1].set_ylabel('Revenue')
+
+        plt.tight_layout()
+        plt.show()
+
+x = Unified_data_structure()
+
+x.visualise_data()

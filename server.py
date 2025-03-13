@@ -51,17 +51,17 @@ class DataAPIServer:
         json_data = json.loads("datasets/consolidated_datasets.json")
         return  json_data
     
-    async def get_data_by_type(self, file_type: str = Path(..., description="The type of file to retrieve")) -> Any:
+    async def get_data_by_type(self, file_type: str) -> Any:
         """
         Retrieve data based on the specified file type.
         
         Args:
-            file_type (str): The type of file to retrieve
+            file_type (str): The type of file to retrieve. For now it supports only
+            csv and json
             
         Returns:
         """
-        # This function is intentionally left empty for now
-        print("this is an enpoint")
+        
         return 0
     
     def run(self, host: str = "0.0.0.0", port: int = 8000):

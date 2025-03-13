@@ -21,6 +21,9 @@ Challenges -
 
     Coming up with visualistations of the data. I had a hard time deciding of cmoing up with meaningful visualisations
 
+    I am not sure what to do with null values in the context of this dataset. I am not sure if I am to replace null values with
+    appropriate values (like 0) or just remove them (resulting in a loss of significant data)
+
 
 Future Improvements
     Improve sturcture of unified dataset
