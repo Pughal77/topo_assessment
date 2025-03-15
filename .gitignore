@@ -1,2 +1,8 @@
 topoAssessmentvenv
 datasets/consolidated_dataset.*
+frontend/data_displayer/node_modules/*
+frontend/node_modules/*
+testing/.pytest_cache
+testing/__pycache__
+.vscode
+.pytest_cache

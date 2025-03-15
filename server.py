@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Path
 from typing import Dict, Any
+from fastapi.responses import FileResponse
 from unified_data_structure import Unified_data_structure
 import json
 
@@ -40,18 +41,16 @@ class DataAPIServer:
             description="Retrieve data based on the specified file type."
         )
     
-    async def get_data(self) -> Any:
+    async def get_data(self):
         """
         Retrieve all data without any parameters.
         
         Returns:
         """
         # This function is intentionally left empty for now
-        self.unified_data_structure.get_data()
-        json_data = json.loads("datasets/consolidated_datasets.json")
-        return  json_data
+        return  self.unified_data_structure.get_data()
     
-    async def get_data_by_type(self, file_type: str) -> Any:
+    async def get_data_by_type(self, file_type: str):
         """
         Retrieve data based on the specified file type.
         
@@ -59,10 +58,20 @@ class DataAPIServer:
             file_type (str): The type of file to retrieve. For now it supports only
             csv and json
             
-        Returns:
+        Returns: a xlsx file or json object
         """
-        
-        return 0
+
+        if file_type == "xlsx":
+            self.unified_data_structure.get_data_xlsx()
+            file_path = "datasets/consolidated_dataset.xlsx"
+            return FileResponse(
+                path=file_path,
+                media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                filename="consolidated_dataset.xlsx"  # Suggested filename for download
+            )
+        elif file_type == "json":
+            return self.unified_data_structure.get_data()
+
     
     def run(self, host: str = "0.0.0.0", port: int = 8000):
         """
