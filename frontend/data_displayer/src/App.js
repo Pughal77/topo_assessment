@@ -69,6 +69,8 @@ function App() {
     }
   };
 
+  const [visualisation, setVisualisation] = useState(null);
+
   // Function to view visualizations
   const handleViewVisualizations = async () => {
     try {
@@ -78,14 +80,13 @@ function App() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
+      const blob = await response.blob()
       
-      const data = await response.json();
-      // Here you would typically update state with the visualization data
-      // and render it in your component or navigate to a visualization page
-      console.log('Visualization data:', data);
+      // Create a URL for the received image blob
+      const imageUrl = URL.createObjectURL(blob);
       
-      // Example: You might want to redirect to a visualization page
-      // window.location.href = '/visualizations';
+      setVisualisation(imageUrl);
     } catch (error) {
       console.error('Error loading visualizations:', error);
       alert('Failed to load visualizations');
@@ -97,7 +98,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div>
+        <div className='header'>
           Data retrieval app
         </div>
         <div className="button-container">
@@ -122,6 +123,9 @@ function App() {
           >
             {loading ? 'Loading...' : 'View visualisations'}
           </button>
+        </div>
+        <div className='data-visualisation'>
+          {visualisation && <img src={visualisation} alt="data-visualisation" style={{width:"100%", height:"auto"}} />}
         </div>
       </header>
     </div>

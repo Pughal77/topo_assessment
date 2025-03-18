@@ -114,34 +114,32 @@ class Unified_data_structure:
         self.data["quarterly_metrics"] = quarterly_metrics
 
     def get_data(self):
-        # return entire self.data as JSON
+        # return entire self.data as JSON. Does not return anything, just creates a file called 'consolidated_dataset.json'
         datasets = {}
         # convert our entire database to be JSON seriliazable. Minding that our data structure has got nested dictionaries where some values
         # are also dataframes
+        # i am handling null values by replacing them with the string "null" for now
+
         datasets["employees"] = {}
         for key, df in self.data["employees"].items():
-            datasets["employees"][key] = df.to_dict(orient='records')
+            datasets["employees"][key] = df.fillna("null").to_dict(orient='records')
         
         for key, df in self.data.items():
             if key not in datasets:
                 if isinstance(df, pd.DataFrame):
                     # values is pandas dataframe
-                    datasets[key] = df.to_dict(orient='records')
+                    datasets[key] = df.fillna("null").to_dict(orient='records')
                 else:
                     datasets[key] = df
 
         # Save the JSON data to a file
         with open('datasets/consolidated_dataset.json', 'w') as json_file:
             json.dump(datasets, json_file, indent=4)
-        
-        # Return the data by opening and reading the file
-        with open('datasets/consolidated_dataset.json', 'r') as json_file:
-            return json.load(json_file)
 
     def get_data_xlsx(self):
-        # here we are converting the self.data to an xlsx file 
+        # Does not return anything, just creates a file called 'consolidated_dataset.json'
+        # We are converting the self.data to an xlsx file 
         # in which each dataset would have its own excel sheet
-        # for dataset 1, I think it is more meaningful to separate them into 2 sheets, one containing 
         with pd.ExcelWriter('datasets/consolidated_dataset.xlsx', engine='xlsxwriter') as writer:
         # Iterate through the dictionary and write each DataFrame to a separate sheet
             for sheet_name, df in self.data.items():
@@ -160,6 +158,7 @@ class Unified_data_structure:
     def visualise_data(self):
         # here is a visalisation of top revenue earners by activity amongst basic membership types
         # basic filtering and ordering of data is allowed as most values in the self.data dictionary are pandas dataframe
+        # it is saved to a png file in datasets directory
 
         fig, axes = plt.subplots(1, 2, figsize=(12, 6))  # 1 row, 2 columns
 
@@ -180,10 +179,8 @@ class Unified_data_structure:
         axes[1].set_ylabel('Revenue')
 
         plt.tight_layout()
-        plt.show()
+        plt.savefig('datasets/data_visualisations.png', dpi=300, bbox_inches='tight')
+        plt.close()
 
     def get_data_keys(self):
         return self.data.keys()
-    
-
-x = Unified_data_structure()

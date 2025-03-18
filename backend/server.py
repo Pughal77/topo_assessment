@@ -65,7 +65,7 @@ class DataAPIServer:
         """
         # This function is intentionally left empty for now
         self.unified_data_structure.get_data()
-        file_path = "../datasets/consolidated_dataset.json"
+        file_path = "datasets/consolidated_dataset.json"
         return FileResponse(
             path=file_path,
             media_type="application/json",
@@ -82,7 +82,7 @@ class DataAPIServer:
         """
         if file_type == "xlsx":
             self.unified_data_structure.get_data_xlsx()
-            file_path = "../datasets/consolidated_dataset.xlsx"
+            file_path = "datasets/consolidated_dataset.xlsx"
             return FileResponse(
                 path=file_path,
                 media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -93,7 +93,7 @@ class DataAPIServer:
 
     async def get_data_visualisation(self):
         self.unified_data_structure.visualise_data()
-        file_path = "../datasets/data_visualisations.png"
+        file_path = "datasets/data_visualisations.png"
         return FileResponse(
             path=file_path,
             media_type="image/png",

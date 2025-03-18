@@ -37,10 +37,10 @@ Data ingestion (How I am to unify the 4 datasets):
 class Unified_data_structure:
     def __init__(self):
         self.data = {}
-        self.read_json("../datasets/dataset1.json")
-        self.read_csv("../datasets/dataset2.csv")
-        self.read_pdf("../datasets/dataset3.pdf")
-        self.read_pptx("../datasets/dataset4.pptx")        
+        self.read_json("datasets/dataset1.json")
+        self.read_csv("datasets/dataset2.csv")
+        self.read_pdf("datasets/dataset3.pdf")
+        self.read_pptx("datasets/dataset4.pptx")        
 
     def read_json(self, filename):
         json_data = pd.read_json(filename) #returns a pnadas dataframe
@@ -133,14 +133,14 @@ class Unified_data_structure:
                     datasets[key] = df
 
         # Save the JSON data to a file
-        with open('../datasets/consolidated_dataset.json', 'w') as json_file:
+        with open('datasets/consolidated_dataset.json', 'w') as json_file:
             json.dump(datasets, json_file, indent=4)
 
     def get_data_xlsx(self):
         # Does not return anything, just creates a file called 'consolidated_dataset.json'
         # We are converting the self.data to an xlsx file 
         # in which each dataset would have its own excel sheet
-        with pd.ExcelWriter('../datasets/consolidated_dataset.xlsx', engine='xlsxwriter') as writer:
+        with pd.ExcelWriter('datasets/consolidated_dataset.xlsx', engine='xlsxwriter') as writer:
         # Iterate through the dictionary and write each DataFrame to a separate sheet
             for sheet_name, df in self.data.items():
                 if sheet_name == "employees":
@@ -179,11 +179,8 @@ class Unified_data_structure:
         axes[1].set_ylabel('Revenue')
 
         plt.tight_layout()
-        plt.savefig('../datasets/data_visualisations.png', dpi=300, bbox_inches='tight')
+        plt.savefig('datasets/data_visualisations.png', dpi=300, bbox_inches='tight')
         plt.close()
 
     def get_data_keys(self):
         return self.data.keys()
-    
-
-x = Unified_data_structure()
