@@ -6,17 +6,18 @@ Simple frontend using react to provide simple user experience to get files and v
 
 
 ## Setup Instructions: Steps to run the app locally and access the API.
-Install required dependencies:
-```
-pip install -r requirements.txt
-```
-1. cd into the backend directory,
-First run the python server
+1. cd into the backend directory
+install required dependencies:
 ```
 cd backend
+pip install -r requirements.txt
+```
+
+2. First run the python server
+```
 python server.py
 ```
-2. cd into the data_displayer directory, to start the react application,
+3. cd into the data_displayer directory, to start the react application,
 ```
 cd frontend/data_displayer
 npm run start
