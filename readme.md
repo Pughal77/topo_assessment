@@ -1,6 +1,6 @@
 Overview: A description of your solution and approach.
 Approach is to use python modules for data visualisation and use FastApi to set up our API endpoints
-
+Simple frontend using react to provide simple user experience to get files and visualisations
 
 
 

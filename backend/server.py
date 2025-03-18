@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Path
 from typing import Dict, Any
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from unified_data_structure import Unified_data_structure
 import json
 
@@ -16,6 +17,15 @@ class DataAPIServer:
             title="Data API",
             description="A class-based API with two endpoints for retrieving data",
             version="1.0.0"
+        )
+
+        self.app.add_middleware(
+            CORSMiddleware,
+            # Origins that should be permitted to make cross-origin requests
+            allow_origins=["http://localhost:3000"],  # React dev server default port
+            allow_credentials=True,
+            allow_methods=["GET"],  # Allow only GET methods
+            allow_headers=["*"],  # Allow all headers
         )
         self._configure_routes()
         ''' Iniitialise unified data structure'''
@@ -40,15 +50,27 @@ class DataAPIServer:
             summary="Get data by file type",
             description="Retrieve data based on the specified file type."
         )
+        self.app.add_api_route(
+            path="/api/data_visualisation",
+            endpoint=self.get_data_visualisation,
+            methods=["GET"],
+            response_model=Any, # specify type of response object later
+            summary="Get data visualisations",
+            description="Retrieve data visualisations"
+        )
     
     async def get_data(self):
         """
         Retrieve all data without any parameters.
-        
-        Returns:
         """
         # This function is intentionally left empty for now
-        return  self.unified_data_structure.get_data()
+        self.unified_data_structure.get_data()
+        file_path = "../datasets/consolidated_dataset.json"
+        return FileResponse(
+            path=file_path,
+            media_type="application/json",
+            filename="consolidated_dataset.json"  # Suggested filename for download
+        )
     
     async def get_data_by_type(self, file_type: str):
         """
@@ -57,22 +79,27 @@ class DataAPIServer:
         Args:
             file_type (str): The type of file to retrieve. For now it supports only
             csv and json
-            
-        Returns: a xlsx file or json object
         """
-
         if file_type == "xlsx":
             self.unified_data_structure.get_data_xlsx()
-            file_path = "datasets/consolidated_dataset.xlsx"
+            file_path = "../datasets/consolidated_dataset.xlsx"
             return FileResponse(
                 path=file_path,
                 media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 filename="consolidated_dataset.xlsx"  # Suggested filename for download
             )
         elif file_type == "json":
-            return self.unified_data_structure.get_data()
+            self.get_data()
 
-    
+    async def get_data_visualisation(self):
+        self.unified_data_structure.visualise_data()
+        file_path = "../datasets/data_visualisations.png"
+        return FileResponse(
+            path=file_path,
+            media_type="image/png",
+            filename="data_visualisations.png"  # Suggested filename for download
+        )
+
     def run(self, host: str = "0.0.0.0", port: int = 8000):
         """
         Run the FastAPI application.
